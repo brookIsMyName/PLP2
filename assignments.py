@@ -17,3 +17,19 @@ def _validate_fields(title, due_date, priority):
         raise ValueError("Due date must be a valid YYYY-MM-DD date.") from None
     if priority not in PRIORITIES:
         raise ValueError("Priority must be High, Medium, or Low.")
+
+def add_assignment(conn, student_id, course_id, title, due_date, priority):
+    """Create a pending assignment; return its integer id."""
+    _validate_fields(title, due_date, priority)
+    u = conn.execute("SELECT role FROM users WHERE id=?", (student_id,)).fetchone()
+    if u is None or u["role"] != "student":
+        raise ValueError("Only a valid student may create assignments.")
+    if conn.execute("SELECT 1 FROM courses WHERE id=?", (course_id,)).fetchone() is None:
+        raise ValueError("Please choose an existing course ID.")
+    cursor = conn.execute(
+        """INSERT INTO assignments (student_id, course_id, title, due_date, priority)
+        VALUES (?, ?, ?, ?, ?)""",
+        (student_id, course_id, title.strip(), due_date, priority),
+    )
+    conn.commit()
+    return cursor.lastrowid
