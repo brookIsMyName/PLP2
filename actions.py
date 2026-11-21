@@ -1,12 +1,5 @@
-"""Update the status of an assignment and delete assignments. Owner: Valentin.
-
-Both actions are only allowed for the student who owns the assignment.
-Advisors are read-only in this demo, so they can neither update nor delete.
-Every problem is reported with a ValueError carrying a message that the menu
-can print as it is, so the program never crashes on bad input.
-"""
-
 STATUSES = ("Pending", "In Progress", "Completed")
+
 
 _ASSIGNMENT_VIEW = """SELECT a.id, a.student_id, u.name AS student_name,
                              a.title, c.code AS course_code, c.name AS course_name,
@@ -18,11 +11,6 @@ _ASSIGNMENT_VIEW = """SELECT a.id, a.student_id, u.name AS student_name,
 
 
 def _clean_id(value, what):
-    """Return value as a positive int or raise a ValueError naming `what`.
-
-    Accepts ints and digit strings typed at the menu. Rejects bools,
-    zero, negatives and anything that is not a whole number.
-    """
     if isinstance(value, bool):
         raise ValueError("{} must be a positive numeric ID.".format(what))
     if isinstance(value, int) and value > 0:
@@ -33,11 +21,6 @@ def _clean_id(value, what):
 
 
 def normalize_status(value):
-    """Return the canonical status for value, or raise a ValueError.
-
-    The menu may collect the status as text ("completed", "IN PROGRESS")
-    or as the option number (1, 2, 3) shown next to each status.
-    """
     if isinstance(value, bool):
         raise ValueError("Status must be one of: " + ", ".join(STATUSES) + ".")
     if isinstance(value, int) and 1 <= value <= len(STATUSES):
@@ -53,7 +36,6 @@ def normalize_status(value):
 
 
 def get_assignment(conn, assignment_id):
-    """Return the assignment row (same columns as the list view) or None."""
     try:
         clean_id = _clean_id(assignment_id, "Assignment ID")
     except ValueError:
@@ -62,11 +44,6 @@ def get_assignment(conn, assignment_id):
 
 
 def _owned_assignment(conn, user_id, assignment_id):
-    """Return the assignment if `user_id` is a student who owns it.
-
-    Raises a ValueError explaining the problem otherwise: bad IDs, unknown
-    user, unknown assignment, advisor account or another student's work.
-    """
     clean_user = _clean_id(user_id, "User ID")
     clean_assignment = _clean_id(assignment_id, "Assignment ID")
 
@@ -87,11 +64,6 @@ def _owned_assignment(conn, user_id, assignment_id):
 
 
 def update_status(conn, user_id, assignment_id, new_status):
-    """Set the status of one of the student's assignments; return the row.
-
-    `new_status` can be the text or the option number of a value in STATUSES.
-    The returned row shows the assignment after the update.
-    """
     status = normalize_status(new_status)
     assignment = _owned_assignment(conn, user_id, assignment_id)
     if assignment["status"] == status:
@@ -106,11 +78,6 @@ def update_status(conn, user_id, assignment_id, new_status):
 
 
 def delete_assignment(conn, user_id, assignment_id):
-    """Delete one of the student's assignments; return the deleted row.
-
-    The returned row lets the menu confirm what was removed
-    ("Deleted: Python Lab (PY101)").
-    """
     assignment = _owned_assignment(conn, user_id, assignment_id)
     conn.execute("DELETE FROM assignments WHERE id = ?", (assignment["id"],))
     conn.commit()
