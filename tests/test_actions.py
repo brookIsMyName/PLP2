@@ -1,7 +1,3 @@
-"""Status update and deletion tests for actions.py (owner: Valentin).
-
-Run: python3 -m unittest discover -s tests -v
-"""
 import unittest
 from datetime import date, timedelta
 
@@ -18,7 +14,6 @@ class ActionsTestCase(unittest.TestCase):
         self.conn = get_connection(":memory:")
         initialize_database(self.conn)
         due = (date.today() + timedelta(days=5)).isoformat()
-        # Student One (id 1) owns `self.mine`, Student Two (id 2) owns `self.theirs`.
         self.mine = add_assignment(self.conn, 1, 1, "Python Lab", due, "High")
         self.theirs = add_assignment(self.conn, 2, 2, "SQL Quiz", due, "Low")
 
@@ -146,7 +141,6 @@ class GetAssignmentTests(ActionsTestCase):
         self.assertIsNone(get_assignment(self.conn, 9999))
         self.assertIsNone(get_assignment(self.conn, "x"))
         self.assertIsNone(get_assignment(self.conn, True))
-
 
 if __name__ == "__main__":
     unittest.main()
