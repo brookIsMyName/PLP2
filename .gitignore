@@ -1,0 +1,4 @@
+__pycache__/
+*.db
+*.pyc
+check.py
