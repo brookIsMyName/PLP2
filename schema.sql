@@ -1,3 +1,5 @@
+-- schema for academic planner database
+
 PRAGMA foreign_keys = ON;
 
 CREATE TABLE IF NOT EXISTS users (
@@ -12,6 +14,7 @@ CREATE TABLE IF NOT EXISTS courses (
     name TEXT NOT NULL
 );
 
+-- main table, linked to users and courses
 CREATE TABLE IF NOT EXISTS assignments (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     student_id INTEGER NOT NULL,
@@ -24,4 +27,6 @@ CREATE TABLE IF NOT EXISTS assignments (
     FOREIGN KEY (student_id) REFERENCES users(id) ON DELETE RESTRICT,
     FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE RESTRICT
 );
+
+-- to make searching by student and due date faster
 CREATE INDEX IF NOT EXISTS idx_assignments_student_due ON assignments(student_id, due_date);
