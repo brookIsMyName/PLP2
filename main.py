@@ -15,6 +15,9 @@ def _ask_number(prompt):
         raise ValueError("Enter a positive numeric ID.")
     return int(raw)
 
+def _show_summary(conn, student_id):
+    stats = get_progress_summary(conn, student_id)
+    print("\nProgress:", ", ".join(f"{key}: {value}" for key, value in stats.items()))
 
 
 def _role_menu(conn):
