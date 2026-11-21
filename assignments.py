@@ -33,3 +33,19 @@ def add_assignment(conn, student_id, course_id, title, due_date, priority):
     )
     conn.commit()
     return cursor.lastrowid
+
+
+def get_assignments(conn, student_id=None):
+    """Return standard view columns; None = advisor/all students."""
+    sql = """SELECT a.id, a.student_id, u.name AS student_name,
+                    a.title, c.code AS course_code, c.name AS course_name,
+                    a.due_date, a.priority, a.status
+             FROM assignments a
+             JOIN users u ON u.id = a.student_id
+             JOIN courses c ON c.id = a.course_id"""
+    params = []
+    if student_id is not None:
+        sql += " WHERE a.student_id = ?"
+        params.append(student_id)
+    sql += " ORDER BY a.due_date ASC, a.id ASC"
+    return conn.execute(sql, params).fetchall()
