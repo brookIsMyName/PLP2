@@ -10,11 +10,7 @@ _VIEW = """SELECT a.id, a.student_id, u.name AS student_name,
 
 
 def _as_date(value):
-    """Normalise value to a plain date.
-
-    Accepts None (today), a date, a datetime, or an ISO 'YYYY-MM-DD'
-    string, so callers are not forced to build a date object first.
-    """
+    """Return value as a plain date: None, date, datetime or ISO text."""
     if value is None:
         return date.today()
     if isinstance(value, datetime):
