@@ -9,6 +9,12 @@ from deadlines import (
     get_upcoming_deadlines, get_overdue_assignments, get_progress_summary,
 )
 
+def _ask_number(prompt):
+    raw = input(prompt).strip()
+    if not raw.isdigit() or int(raw) <= 0:
+        raise ValueError("Enter a positive numeric ID.")
+    return int(raw)
+
 
 
 def _role_menu(conn):
