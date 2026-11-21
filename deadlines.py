@@ -31,7 +31,9 @@ def _as_date(value):
 
 def get_upcoming_deadlines(conn, student_id=None, days_ahead=7, reference_date=None):
     """Incomplete assignments due today through N days ahead, inclusive."""
-    if not isinstance(days_ahead, int) or days_ahead < 0:
+    whole_number = isinstance(days_ahead, int) and not isinstance(
+        days_ahead, bool)
+    if not whole_number or days_ahead < 0:
         raise ValueError("days_ahead must be a nonnegative integer.")
     today = _as_date(reference_date)
     end = today + timedelta(days=days_ahead)
