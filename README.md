@@ -1,4 +1,4 @@
-# PLP7 — Student Academic Planner
+# Techo: Student Academic Planner, PLP7
 
 African Leadership University (ALU) · BSE Year 1 Trimester 2 · Peer Learning Project II
 
@@ -88,17 +88,6 @@ python3 -m unittest discover -s tests -v
 
 These menu selections require no passwords. Startup seeds the same users and courses (`PY101`, `SQL101`, `AW101`) without duplicates. Create sample assignments through the student menu.
 
-## 15-minute demonstration
-
-Before starting, prepare one date within the next seven days and one date before today, both in `YYYY-MM-DD` format.
-
-| Time | Walkthrough |
-| --- | --- |
-| 0–4 min | Select Student One. View current assignments, add a future-due Python assignment and a past-due SQL assignment, then list them and note their IDs. |
-| 4–7 min | Update the future assignment to `In Progress`. Show upcoming deadlines, overdue assignments, and progress to illustrate where each record appears. |
-| 7–10 min | Log out and select Student Two. Verify that Student One’s records are absent and try updating one of their IDs to show that the ownership check rejects it. |
-| 10–12 min | Log out and select Academic Advisor. View all assignments and overall progress. Point out the student names and the read-only menu. |
-| 12–15 min | Return as Student One and delete the overdue sample using `DELETE`. Log out, exit, and relaunch. Verify that the updated assignment is still present and the deleted one is absent. |
 
 ## Q&A source map
 
