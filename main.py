@@ -22,10 +22,16 @@ def _display(rows):
 
 
 def _ask_number(prompt):
-    raw = input(prompt).strip()
-    if not raw.isdigit() or int(raw) <= 0:
+    return _positive_id(input(prompt).strip())
+
+
+def _positive_id(raw):
+    if not raw.isdecimal():
         raise ValueError("Enter a positive numeric ID.")
-    return int(raw)
+    number = int(raw)
+    if not 0 < number <= 2**63 - 1:
+        raise ValueError("Enter a positive numeric ID.")
+    return number
 
 def _show_summary(conn, student_id):
     stats = get_progress_summary(conn, student_id)
@@ -56,15 +62,15 @@ def _student_menu(conn, user):
             elif choice == "3":
                 aid = _ask_number("Assignment ID: ")
                 status = input("New status (Pending/In Progress/Completed): ").strip()
-                print("Updated." if update_status(conn, aid, student_id, status)
-                      else "Assignment not found or not yours.")
+                update_status(conn, student_id, aid, status)
+                print("Updated.")
             elif choice == "4":
                 _display(get_upcoming_deadlines(conn, student_id))
             elif choice == "5":
                 aid = _ask_number("Assignment ID: ")
                 if input("Type DELETE to confirm: ").strip() == "DELETE":
-                    print("Deleted." if delete_assignment(conn, aid, student_id)
-                          else "Assignment not found or not yours.")
+                    delete_assignment(conn, student_id, aid)
+                    print("Deleted.")
                 else:
                     print("Deletion cancelled.")
             elif choice == "6":
