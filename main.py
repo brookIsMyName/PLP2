@@ -100,7 +100,7 @@ def _advisor_menu(conn):
 
 def _role_menu(conn):
     while True:
-        print("\n===== STUDENT ACADEMIC PLANNER =====")
+        print("\n===== TECHO: THE STUDENT ACADEMIC PLANNER =====")
         print("Demo role selection. No passwords. Classroom/test data only.")
         for user in list_users(conn):
             print(f"  {user['id']} {user['name']} ({user['role']})")
